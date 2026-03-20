@@ -1,27 +1,30 @@
-<?php include 'header.php'; ?>
-<title>Sistema de Eventos - Dashboard</title>
+<?php
+include("../config/conexao.php");
+include("header.php");
 
-<main class="dashboard-container">
-    <h1 class="page-title">Sistema de Organização de Eventos</h1>
+$grupos = mysqli_query($conexao, "SELECT * FROM grupo_eventos");
+?>
 
-    <div class="dashboard-grid">
-        <a href="criar_grupo.php" class="quick-link-card">
-            <span class="icon-placeholder"></span>
-            Criar Grupo de Eventos
-        </a>
-        <a href="criar_evento.php" class="quick-link-card">
-            <span class="icon-placeholder"></span>
-            Criar Evento
-        </a>
-        <a href="cronograma.php" class="quick-link-card">
-            <span class="icon-placeholder"></span>
-            Ver Cronograma
-        </a>
+<div class="dashboard-container">
+
+    <h1 class="page-title">Meus Grupos</h1>
+
+    <div class="acoes-grupo">
+        <a href="criar_grupo.php" class="btn">+ Criar Grupo</a>
+        <a href="entrar_grupo.php" class="btn">Entrar com código</a>
     </div>
-</main>
 
-<?php include 'footer.php'; ?>
+    <div class="grupos-container">
 
-</body>
+        <?php while($grupo = mysqli_fetch_assoc($grupos)){ ?>
 
-</html>
+            <a href="grupo.php?id=<?php echo $grupo['id']; ?>" class="card-grupo">
+                <h3><?php echo $grupo['nome']; ?></h3>
+                <p><?php echo $grupo['descricao']; ?></p>
+            </a>
+
+        <?php } ?>
+
+    </div>
+
+</div>

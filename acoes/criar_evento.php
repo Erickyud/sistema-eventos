@@ -14,7 +14,8 @@ VALUES
 ('$nome','$descricao','$data_evento','$hora_evento','$local','$grupo_id')";
 
 if(mysqli_query($conexao,$sql)){
-header("Location: ../telas/tela_principal.php");
+    header("Location: ../telas/grupo.php?id=$grupo_id");
+    exit;
 }
 
 else{

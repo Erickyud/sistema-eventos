@@ -1,7 +1,7 @@
 <?php
 include("../config/conexao.php");
 
-$grupos = mysqli_query($conexao,"SELECT * FROM grupo_eventos");
+$id = $_GET['id'];
 ?>
 
 <?php include 'header.php'; ?>
@@ -11,6 +11,9 @@ $grupos = mysqli_query($conexao,"SELECT * FROM grupo_eventos");
         <h1 class="page-title">Criar Evento</h1>
         
         <form action="../acoes/criar_evento.php" method="POST" class="glass-form">
+
+            <input type="hidden" name="grupo_id" value="<?php echo $id; ?>">
+
             <label class="form-label" for="nome_evento">Nome do Evento:</label>
             <input type="text" id="nome_evento" name="nome" class="form-input" required>
             
@@ -30,20 +33,6 @@ $grupos = mysqli_query($conexao,"SELECT * FROM grupo_eventos");
             
             <label class="form-label" for="local">Local:</label>
             <input type="text" id="local" name="local" class="form-input" placeholder="Endereço do evento">
-            
-            <label class="form-label" for="grupo_id">Grupo:</label>
-            <select id="grupo_id" name="grupo_id" class="form-input">
-                <option value="">Selecione um grupo</option>
-                <?php
-                while($grupo = mysqli_fetch_assoc($grupos)){
-                ?>
-                <option value="<?php echo $grupo['id']; ?>">
-                    <?php echo $grupo['nome']; ?>
-                </option>
-                <?php
-                }
-                ?>
-            </select>
             
             <div style="display: flex; gap: 1rem; justify-content: space-between; align-items: center; margin-top: 2rem;">
                 <a href="tela_principal.php" class="btn" style="background: #6b7280;">Cancelar</a>
