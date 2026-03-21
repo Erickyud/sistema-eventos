@@ -15,7 +15,7 @@
             <div class="logo">
                 <h2>Sistema de Eventos</h2>
             </div>
-<button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             <nav class="nav-links">
                 <a href="tela_principal.php">Dashboard</a>
                 <a href="criar_grupo.php">Grupos</a>

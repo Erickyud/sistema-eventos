@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/03/2026 às 19:58
+-- Tempo de geração: 21/03/2026 às 07:28
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -55,15 +55,45 @@ CREATE TABLE `grupo_eventos` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `descricao` text DEFAULT NULL,
-  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp()
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `codigo` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `grupo_eventos`
 --
 
-INSERT INTO `grupo_eventos` (`id`, `nome`, `descricao`, `data_criacao`) VALUES
-(1, 'Futebol', 'Fut dos amigos', '2026-03-16 18:18:38');
+INSERT INTO `grupo_eventos` (`id`, `nome`, `descricao`, `data_criacao`, `codigo`) VALUES
+(1, 'Futebol', 'Fut dos amigos', '2026-03-16 18:18:38', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `mensagens`
+--
+
+CREATE TABLE `mensagens` (
+  `id` int(11) NOT NULL,
+  `id_grupo` int(11) DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `mensagem` text DEFAULT NULL,
+  `data_envio` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `mensagens`
+--
+
+INSERT INTO `mensagens` (`id`, `id_grupo`, `id_usuario`, `mensagem`, `data_envio`) VALUES
+(1, 1, 1, 'Bora marcar?', '2026-03-20 15:46:03'),
+(2, 1, 2, 'Bora marcar?', '2026-03-20 16:09:26'),
+(3, 1, 1, 'Bora marcar?', '2026-03-20 16:14:55'),
+(4, 1, 1, 'Bora', '2026-03-20 16:27:08'),
+(5, 1, 1, 'Partiu', '2026-03-20 16:27:29'),
+(6, 1, 2, 'Marca ai', '2026-03-20 16:37:17'),
+(7, 1, 1, 'Pode deixar', '2026-03-20 16:37:51'),
+(8, 1, 1, 'Beleza', '2026-03-20 16:42:45'),
+(9, 1, 1, 'bora', '2026-03-20 16:54:14');
 
 -- --------------------------------------------------------
 
@@ -105,6 +135,12 @@ ALTER TABLE `grupo_eventos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `mensagens`
+--
+ALTER TABLE `mensagens`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -119,13 +155,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `grupo_eventos`
 --
 ALTER TABLE `grupo_eventos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `mensagens`
+--
+ALTER TABLE `mensagens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
