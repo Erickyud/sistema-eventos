@@ -1,7 +1,13 @@
 <?php
+session_start();
 include("../config/conexao.php");
 
-$id = $_GET['id'];
+$id_grupo = $_GET['id_grupo'] ?? 0;
+
+if($id_grupo == 0){
+    echo "Erro: grupo não informado.";
+    exit;
+}
 ?>
 
 <?php include 'header.php'; ?>
@@ -12,30 +18,34 @@ $id = $_GET['id'];
         
         <form action="../acoes/criar_evento.php" method="POST" class="glass-form">
 
-            <input type="hidden" name="grupo_id" value="<?php echo $id; ?>">
+            <input type="hidden" name="grupo_id" value="<?php echo $id_grupo; ?>">
 
-            <label class="form-label" for="nome_evento">Nome do Evento:</label>
-            <input type="text" id="nome_evento" name="nome" class="form-input" required>
+            <label class="form-label">Nome do Evento:</label>
+            <input type="text" name="nome" class="form-input" required>
             
-            <label class="form-label" for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" class="form-input" rows="5" placeholder="Detalhes do evento..."></textarea>
+            <label class="form-label">Descrição:</label>
+            <textarea name="descricao" class="form-input" rows="5" placeholder="Detalhes do evento..."></textarea>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
                 <div>
-                    <label class="form-label" for="data_evento">Data:</label>
-                    <input type="date" id="data_evento" name="data_evento" class="form-input">
+                    <label class="form-label">Data:</label>
+                    <input type="date" name="data_evento" class="form-input">
                 </div>
                 <div>  
-                    <label class="form-label" for="hora_evento">Hora:</label>
-                    <input type="time" id="hora_evento" name="hora_evento" class="form-input">
+                    <label class="form-label">Hora:</label>
+                    <input type="time" name="hora_evento" class="form-input">
                 </div>
             </div>
             
-            <label class="form-label" for="local">Local:</label>
-            <input type="text" id="local" name="local" class="form-input" placeholder="Endereço do evento">
+            <label class="form-label">Local:</label>
+            <input type="text" name="local" class="form-input" placeholder="Endereço do evento">
             
             <div style="display: flex; gap: 1rem; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                <a href="tela_principal.php" class="btn" style="background: #6b7280;">Cancelar</a>
+                
+                <a href="grupo.php?id_grupo=<?php echo $id_grupo; ?>" class="btn" style="background: #6b7280;">
+                    Cancelar
+                </a>
+
                 <button type="submit" class="btn">Criar Evento</button>
             </div>
         </form>
