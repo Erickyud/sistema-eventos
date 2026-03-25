@@ -3,9 +3,16 @@ session_start();
 include("../config/conexao.php");
 include("header.php");
 
-$id = $_GET['id'];
+$id_grupo = $_GET['id_grupo'] ?? 0;
 
-$grupo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM grupo_eventos WHERE id=$id"));
+if($id_grupo == 0){
+    echo "Erro: grupo não informado.";
+    exit;
+}
+
+$grupo = mysqli_fetch_assoc(mysqli_query($conexao, 
+    "SELECT * FROM grupo_eventos WHERE id = $id_grupo"
+));
 ?>
 
 <div class="voltar-container">
@@ -16,34 +23,62 @@ $grupo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM grupo_eventos 
 
     <!-- CHAT -->
     <div class="chat-box">
-        <h2><?php echo $grupo['nome']; ?></h2>
+        <div class="topo-grupo">
+            <h2><?php echo $grupo['nome']; ?></h2>
+            <span>Código: <?php echo $grupo['codigo']; ?></span>
+        </div>
+
+        <button onclick="toggleParticipantes()" class="btn">
+            👥 Ver Participantes
+        </button>
+
+        <div id="participantes-box" class="participantes-box" style="display:none;">
+            <h3>Participantes</h3>
+
+            <?php
+            $usuarios = mysqli_query($conexao, "
+                SELECT u.* FROM usuarios u
+                JOIN grupo_usuarios gu ON gu.id_usuario = u.id
+                WHERE gu.id_grupo = $id_grupo
+            ");
+
+            while($u = mysqli_fetch_assoc($usuarios)){
+                echo "<p>👤 " . $u['nome'] . "</p>";
+            }
+            ?>
+        </div>
 
         <div class="chat-mensagens" id="chat"></div>
 
         <form class="chat-form" onsubmit="enviarMensagem(event)">
-            <input type="hidden" name="id_grupo" value="<?php echo $id; ?>">
+            <input type="hidden" name="id_grupo" value="<?php echo $id_grupo; ?>">
             <input type="text" name="mensagem" placeholder="Digite uma mensagem..." required>
             <button type="submit">Enviar</button>
         </form>
     </div>
 
+    <!-- EVENTOS -->
     <div class="eventos-box">
         <h3>Eventos</h3>
 
         <div id="eventos"></div>
 
-        <a href="criar_evento.php?id=<?php echo $id; ?>" class="btn">+ Criar Evento</a>
+        <a href="criar_evento.php?id_grupo=<?php echo $id_grupo; ?>" class="btn">
+            + Criar Evento
+        </a>
     </div>
-
 </div>
 
 </main>
 
 <script>
-let ultimoTamanho = 0;
+let abasAbertas = {};
+</script>
 
+<!-- CHAT -->
+<script>
 function atualizarChat() {
-    fetch('../acoes/buscar_mensagens.php?id_grupo=<?php echo $id; ?>')
+    fetch('../acoes/buscar_mensagens.php?id_grupo=<?php echo $id_grupo; ?>')
     .then(response => response.text())
     .then(data => {
         var chat = document.getElementById("chat");
@@ -80,12 +115,22 @@ function enviarMensagem(event) {
 }
 </script>
 
+<!-- EVENTOS -->
 <script>
 function atualizarEventos() {
-    fetch('../acoes/buscar_eventos.php?id_grupo=<?php echo $id; ?>')
+    fetch('../acoes/buscar_eventos.php?id_grupo=<?php echo $id_grupo; ?>')
     .then(response => response.text())
     .then(data => {
         document.getElementById("eventos").innerHTML = data;
+
+        for (let id in abasAbertas) {
+            if (abasAbertas[id]) {
+                let box = document.getElementById("participantes-" + id);
+                if (box) {
+                    box.style.display = "block";
+                }
+            }
+        }
     });
 }
 
@@ -93,6 +138,45 @@ atualizarEventos();
 setInterval(atualizarEventos, 3000);
 </script>
 
+<script>
+function enviarStatus(form, status) {
+    const formData = new FormData(form);
+    formData.set("status", status);
+
+    fetch('../acoes/responder_evento.php', {
+        method: 'POST',
+        body: formData
+    }).then(() => {
+        atualizarEventos();
+    });
+}
+</script>
+
+<script>
+function toggleParticipantes() {
+    var box = document.getElementById("participantes-box");
+
+    if (box.style.display === "none") {
+        box.style.display = "block";
+    } else {
+        box.style.display = "none";
+    }
+}
+</script>
+
+<script>
+function toggleParticipantesEvento(id) {
+    let box = document.getElementById("participantes-" + id);
+
+    if (box.style.display === "none") {
+        box.style.display = "block";
+        abasAbertas[id] = true;
+    } else {
+        box.style.display = "none";
+        abasAbertas[id] = false;
+    }
+}
+</script>
 
 </body>
 </html>

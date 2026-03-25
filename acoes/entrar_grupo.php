@@ -1,23 +1,25 @@
 <?php
-
+session_start();
 include("../config/conexao.php");
 
 $codigo = $_POST['codigo'];
+$id_usuario = $_SESSION['usuario_id'];
 
-$sql = "SELECT * FROM grupo_eventos WHERE codigo='$codigo'";
-$resultado = mysqli_query($conexao, $sql);
+$sql = "SELECT * FROM grupo_eventos WHERE codigo = '$codigo'";
+$res = mysqli_query($conexao, $sql);
 
-if(mysqli_num_rows($resultado) > 0){
+if(mysqli_num_rows($res) > 0){
 
-    $grupo = mysqli_fetch_assoc($resultado);
+    $grupo = mysqli_fetch_assoc($res);
+    $id_grupo = $grupo['id'];
 
-    header("Location: ../telas/grupo.php?id=" . $grupo['id']);
-    exit;
+    mysqli_query($conexao, "
+        INSERT INTO grupo_usuarios (id_grupo, id_usuario)
+        VALUES ($id_grupo, $id_usuario)
+    ");
 
-}else{
-
-    echo "Código inválido.";
-
+    header("Location: ../telas/tela_principal.php");
+} else {
+    echo "Código inválido";
 }
-
 ?>

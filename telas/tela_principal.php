@@ -18,7 +18,7 @@ $grupos = mysqli_query($conexao, "SELECT * FROM grupo_eventos");
 
         <?php while($grupo = mysqli_fetch_assoc($grupos)){ ?>
 
-            <a href="grupo.php?id=<?php echo $grupo['id']; ?>" class="card-grupo">
+            <a href="grupo.php?id_grupo=<?php echo $grupo['id']; ?>" class="card-grupo">
                 <h3><?php echo $grupo['nome']; ?></h3>
                 <p><?php echo $grupo['descricao']; ?></p>
             </a>
