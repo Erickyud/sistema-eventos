@@ -4,11 +4,12 @@ include("../config/conexao.php");
 
 $nome = $_POST['nome'];
 $descricao = $_POST['descricao'];
+$criador_id = $_SESSION['usuario_id'];
 
 $codigo = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 6);
 
-$sql = "INSERT INTO grupo_eventos (nome, descricao, codigo)
-        VALUES ('$nome', '$descricao', '$codigo')";
+$sql = "INSERT INTO grupo_eventos (nome, descricao, codigo, criador_id)
+        VALUES ('$nome', '$descricao', '$codigo', $criador_id)";
 
 if(mysqli_query($conexao, $sql)){
 

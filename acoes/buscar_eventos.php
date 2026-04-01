@@ -5,6 +5,10 @@ include("../config/conexao.php");
 $id_usuario = $_SESSION['usuario_id'] ?? 0;
 $id_grupo = $_GET['id_grupo'];
 
+$grupo = mysqli_fetch_assoc(mysqli_query($conexao, "
+    SELECT * FROM grupo_eventos WHERE id = $id_grupo
+"));
+
 $sql = "SELECT * FROM eventos WHERE grupo_id = $id_grupo ORDER BY data_evento ASC";
 $resultado = mysqli_query($conexao, $sql);
 
@@ -46,7 +50,23 @@ while($e = mysqli_fetch_assoc($resultado)){
     
     <div class="evento-item">
 
-        <strong><?php echo $e['nome']; ?></strong>
+        <div class="topo-evento">
+            <strong class="titulo-evento"><?php echo $e['nome']; ?></strong>
+
+        <?php if($grupo['criador_id'] == $id_usuario){ ?>
+            <div class="menu-opcoes">
+                <button onclick="toggleMenuEvento(<?php echo $e['id']; ?>)" class="btn-menu">⋮</button>
+
+            <div id="menu-evento-<?php echo $e['id']; ?>" class="menu-box">
+                <a href="javascript:void(0)" onclick="confirmarExcluirEvento(<?php echo $e['id']; ?>, <?php echo $id_grupo; ?>)">
+                    🗑 Excluir
+                </a>
+                <a href="../telas/editar_evento.php?id=<?php echo $e['id']; ?>">✏️ Editar</a>
+            </div>
+            </div>
+        <?php } ?>
+    </div>
+
         <p><?php echo $e['descricao']; ?></p>
         <p>📍 <?php echo $e['local']; ?></p>
         <p>📅 <?php echo $e['data_evento']; ?> às <?php echo $e['hora_evento']; ?></p>

@@ -1,8 +1,15 @@
 <?php
+session_start();
 include("../config/conexao.php");
 include("header.php");
 
-$grupos = mysqli_query($conexao, "SELECT * FROM grupo_eventos");
+$usuario_id = $_SESSION['usuario_id'] ?? 0;
+
+$grupos = mysqli_query($conexao, "
+    SELECT g.* FROM grupo_eventos g
+    JOIN grupo_usuarios gu ON gu.id_grupo = g.id
+    WHERE gu.id_usuario = $usuario_id
+");
 ?>
 
 <div class="dashboard-container">

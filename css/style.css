@@ -585,6 +585,12 @@ input.success {
 }
 
 /* EVENTOS */
+.topo-evento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .eventos-box {
   flex: 1;
   background: white;
@@ -680,4 +686,91 @@ input.success {
 
 .participantes-box p {
   margin: 5px 0;
+}
+
+/* 3 PONTO OPCOES DO GRUPO(EXCLUIR...)*/
+
+.menu-opcoes {
+  position: relative;
+}
+
+.btn-menu {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.menu-box {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.menu-box a {
+  text-decoration: none;
+  color: red;
+  display: block;
+}
+
+/* TOPO GRUPO*/
+
+.topo-grupo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-grupo h2 {
+  margin: 0;
+}
+
+.titulo-grupo span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* MENU */
+.menu-opcoes {
+  position: relative;
+}
+
+.btn-menu {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* CAIXA DO MENU */
+.menu-box {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 0;
+  min-width: 140px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  display: none;
+}
+
+/* ITEM */
+.menu-box a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.menu-box a:hover {
+  background: #f5f5f5;
+  color: red;
 }
