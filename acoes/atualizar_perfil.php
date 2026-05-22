@@ -9,14 +9,12 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $id = $_SESSION['usuario_id'];
 $nome = $_POST['nome'];
-$email = $_POST['email'];
 
 // Usando mysqli_real_escape_string por enquanto para seguir o padrão, 
 // embora tenha sugerido Prepared Statements, farei a migração de segurança na Fase 2.
 $nome = mysqli_real_escape_string($conexao, $nome);
-$email = mysqli_real_escape_string($conexao, $email);
 
-$sql = "UPDATE usuarios SET nome = '$nome', email = '$email' WHERE id = $id";
+$sql = "UPDATE usuarios SET nome = '$nome' WHERE id = $id";
 
 if (mysqli_query($conexao, $sql)) {
     header("Location: ../telas/meu_perfil.php?msg=sucesso");

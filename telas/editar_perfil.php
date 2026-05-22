@@ -35,9 +35,9 @@ include('header.php');
             </div>
 
             <div>
-                <label class="form-label" for="email">E-mail</label>
-                <input type="email" id="email" name="email" class="form-input" 
-                       value="<?php echo htmlspecialchars($usuario_logado['email']); ?>" required>
+                <label class="form-label" for="email">E-mail <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(Não pode ser alterado)</span></label>
+                <input type="email" id="email" class="form-input" 
+                       value="<?php echo htmlspecialchars($usuario_logado['email']); ?>" disabled style="background-color: var(--bg-accent); cursor: not-allowed; opacity: 0.7;">
             </div>
 
             <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 1.5rem; gap: 1rem;">
