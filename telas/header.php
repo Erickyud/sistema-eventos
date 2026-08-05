@@ -79,7 +79,7 @@ $mostrar_navbar = ($pagina_atual != 'login.php' && $pagina_atual != 'cadastro.ph
                     <a href="meu_perfil.php">👤 Meu Perfil</a>
                     <a href="javascript:void(0)" onclick="toggleTheme()" id="themeToggleBtn">🌓 Mudar Tema</a>
                     <hr style="border: 0; border-top: 1px solid var(--border); margin: 5px 0;">
-                    <a href="../acoes/logout.php" style="color: var(--danger);">🚪 Sair</a>
+                    <a href="../acoes/logout.php" style="color: var(--danger);" onclick="return confirm('Deseja realmente sair da sua conta?');">🚪 Sair</a>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@ $mostrar_navbar = ($pagina_atual != 'login.php' && $pagina_atual != 'cadastro.ph
         <span class="bottom-icon">👤</span>
         <span>Perfil</span>
     </a>
-    <a href="../acoes/logout.php" class="bottom-nav-item">
+    <a href="../acoes/logout.php" class="bottom-nav-item" onclick="return confirm('Deseja realmente sair da sua conta?');">
         <span class="bottom-icon">🚪</span>
         <span>Sair</span>
     </a>

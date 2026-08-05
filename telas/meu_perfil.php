@@ -55,7 +55,7 @@ include('header.php');
             <a href="editar_perfil.php" class="btn" style="padding-left: 2rem; padding-right: 2rem;">
                 Editar Informações
             </a>
-            <a href="../acoes/logout.php" class="btn" style="background: var(--bg-accent); color: var(--danger);">
+            <a href="../acoes/logout.php" class="btn" style="background: var(--bg-accent); color: var(--danger);" onclick="return confirm('Deseja realmente sair da sua conta?');">
                 Sair da Conta
             </a>
         </div>

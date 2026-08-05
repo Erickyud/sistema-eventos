@@ -251,7 +251,8 @@ include("header.php");
 let abasAbertas = {};
 
 function copiarLink(codigo) {
-    const link = window.location.origin + "/sistema-eventos/telas/entrar_grupo.php?codigo=" + codigo;
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/telas/'));
+    const link = window.location.origin + basePath + "/telas/entrar_grupo.php?codigo=" + codigo;
     navigator.clipboard.writeText(link).then(() => {
         alert("Link de convite copiado para a área de transferência!");
     });

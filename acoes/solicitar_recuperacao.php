@@ -65,8 +65,10 @@ try {
     $mail->setFrom(MAIL_USER, MAIL_NAME);
     $mail->addAddress($email, $nome_usuario);
 
-    // Conteúdo do E-mail
-    $link_recuperacao = "http://" . $_SERVER['HTTP_HOST'] . "/sistema-eventos/telas/redefinir_senha.php?token=" . $token;
+    // Conteúdo do E-mail (Detecta dinamicamente HTTP/HTTPS e se está em subpasta)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $base_dir = str_replace('/acoes/solicitar_recuperacao.php', '', $_SERVER['SCRIPT_NAME']);
+    $link_recuperacao = $protocol . $_SERVER['HTTP_HOST'] . $base_dir . "/telas/redefinir_senha.php?token=" . $token;
     
     $mail->isHTML(true);
     $mail->Subject = 'Recuperação de Senha - Sistema BORA!';
