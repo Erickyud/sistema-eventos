@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/04/2026 às 17:41
+-- Tempo de geração: 26/05/2026 às 06:37
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -35,19 +35,20 @@ CREATE TABLE `eventos` (
   `hora_evento` time DEFAULT NULL,
   `local` varchar(100) DEFAULT NULL,
   `grupo_id` int(11) DEFAULT NULL,
-  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp()
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `latitude` varchar(50) DEFAULT NULL,
+  `longitude` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `eventos`
 --
 
-INSERT INTO `eventos` (`id`, `nome`, `descricao`, `data_evento`, `hora_evento`, `local`, `grupo_id`, `data_criacao`) VALUES
-(16, 'Futebol', 'Futebol fim de semana', '2026-03-28', '19:00:00', 'AkiTem', 7, '2026-03-25 03:15:47'),
-(17, 'aaaaa', 'asdws', '2026-03-26', '04:27:00', 'aaaa', 7, '2026-03-25 03:27:41'),
-(18, 'Lolzin', 'lol da noite', '2026-04-01', '19:20:00', 'dc', 8, '2026-04-01 19:14:37'),
-(21, 'Futebol', 'Fut', '2026-04-02', '20:39:00', 'FUTESALAO', 11, '2026-04-01 21:37:22'),
-(22, 'cs', 'asda', '2026-04-03', '05:50:00', 'aaaaa', 11, '2026-04-03 07:49:17');
+INSERT INTO `eventos` (`id`, `nome`, `descricao`, `data_evento`, `hora_evento`, `local`, `grupo_id`, `data_criacao`, `latitude`, `longitude`) VALUES
+(2, 'Reuniao', 'Reuniao para ajustar o trabalho.', '2026-03-12', '18:27:00', 'Guiomar Novaes, 23 - Ipanema, Aracatuba', 2, '2026-05-06 16:23:10', '-21.18678674806756', '-50.440218597650535'),
+(5, 'Reuniao', 'Reuniao para a atividade.', '2026-05-06', '13:58:00', '', 2, '2026-05-06 16:57:08', NULL, NULL),
+(6, 'Jantar', 'Jantar e reencontro.', '2026-05-15', '18:30:00', 'Rua das Flores, 121 - Jundiá, Aracatuba', 2, '2026-05-07 19:13:57', '-21.21034309944092', '-50.443511009216316'),
+(7, 'Futebol', 'Futebol com amigos.', '2026-05-24', '19:30:00', 'Avenida José Ferreira, 321 - Ipanema, Aracatuba', 2, '2026-05-22 20:51:37', '-21.186799821276477', '-50.44022340504356');
 
 -- --------------------------------------------------------
 
@@ -61,18 +62,16 @@ CREATE TABLE `grupo_eventos` (
   `descricao` text DEFAULT NULL,
   `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `codigo` varchar(10) DEFAULT NULL,
-  `criador_id` int(11) DEFAULT NULL
+  `criador_id` int(11) DEFAULT NULL,
+  `chat_restrito` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `grupo_eventos`
 --
 
-INSERT INTO `grupo_eventos` (`id`, `nome`, `descricao`, `data_criacao`, `codigo`, `criador_id`) VALUES
-(7, 'Futebol', 'Futebol dos Aposentados', '2026-03-25 03:14:59', 'I5J1ZP', NULL),
-(8, 'bbbb', 'bbbbb', '2026-03-25 03:29:15', 'HDTX53', NULL),
-(11, 'CS', '112', '2026-04-01 20:37:35', '9N0KDP', 2),
-(13, 'Jantar', 'jantar sexta', '2026-04-01 23:16:07', 'PWSHU5', 2);
+INSERT INTO `grupo_eventos` (`id`, `nome`, `descricao`, `data_criacao`, `codigo`, `criador_id`, `chat_restrito`) VALUES
+(2, 'Eventos ', 'Grupo destinado a eventos institucionais.', '2026-05-06 15:52:52', '7AJQBJ', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -83,21 +82,18 @@ INSERT INTO `grupo_eventos` (`id`, `nome`, `descricao`, `data_criacao`, `codigo`
 CREATE TABLE `grupo_usuarios` (
   `id` int(11) NOT NULL,
   `id_grupo` int(11) DEFAULT NULL,
-  `id_usuario` int(11) DEFAULT NULL
+  `id_usuario` int(11) DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT 0,
+  `status` enum('ativo','banido') DEFAULT 'ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `grupo_usuarios`
 --
 
-INSERT INTO `grupo_usuarios` (`id`, `id_grupo`, `id_usuario`) VALUES
-(7, 7, 2),
-(8, 8, 1),
-(9, 8, 2),
-(12, 11, 2),
-(13, 11, 1),
-(16, 13, 2),
-(18, 7, 1);
+INSERT INTO `grupo_usuarios` (`id`, `id_grupo`, `id_usuario`, `is_admin`, `status`) VALUES
+(4, 2, 1, 1, 'ativo'),
+(8, 2, 2, 0, 'ativo');
 
 -- --------------------------------------------------------
 
@@ -118,8 +114,9 @@ CREATE TABLE `mensagens` (
 --
 
 INSERT INTO `mensagens` (`id`, `id_grupo`, `id_usuario`, `mensagem`, `data_envio`) VALUES
-(24, 8, 2, 'a', '2026-03-25 00:29:47'),
-(25, 11, 2, 'asdas', '2026-04-03 04:49:59');
+(1, 2, 2, 'Oi', '2026-05-06 13:03:47'),
+(2, 2, 1, 'Boa tarde!', '2026-05-06 13:06:43'),
+(3, 2, 2, 'a', '2026-05-08 02:07:42');
 
 -- --------------------------------------------------------
 
@@ -140,8 +137,37 @@ CREATE TABLE `presencas` (
 --
 
 INSERT INTO `presencas` (`id`, `id_evento`, `id_usuario`, `status`, `data_resposta`) VALUES
-(12, 17, 2, 'nao_vou', '2026-03-25 00:27:49'),
-(13, 18, 2, 'vou', '2026-04-01 16:14:44');
+(1, 1, 1, 'vou', '2026-04-17 01:51:02'),
+(2, 2, 2, 'vou', '2026-05-06 13:23:47'),
+(3, 2, 1, 'vou', '2026-05-06 13:24:04'),
+(4, 5, 1, 'vou', '2026-05-06 13:57:15'),
+(5, 5, 2, 'nao_vou', '2026-05-06 13:57:28');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `recuperacao_senha`
+--
+
+CREATE TABLE `recuperacao_senha` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expira_em` datetime NOT NULL,
+  `usado` tinyint(1) DEFAULT 0,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `recuperacao_senha`
+--
+
+INSERT INTO `recuperacao_senha` (`id`, `usuario_id`, `token`, `expira_em`, `usado`, `criado_em`) VALUES
+(1, 1, 'b5901f43811c8d202344b4987f3e2c187a50493867d6bcadfc450ae2cbc6e232', '2026-04-16 23:02:31', 0, '2026-04-16 20:32:31'),
+(2, 1, '48b38ab5370b60e75be5884b607289dd022d55fbd6f4906b1839f15decaa1f6d', '2026-04-16 23:19:16', 1, '2026-04-16 20:49:16'),
+(3, 1, '237a2e4f73e3693dcd3862a06558b4c4296c5792c48557dd5a9cb36d381cc2ea', '2026-04-16 23:23:03', 0, '2026-04-16 20:53:03'),
+(4, 1, 'e6185c2c171ee1920f4ff8abfe140e1d499dad19e9889d88316e1347ce58e9d8', '2026-04-16 23:24:51', 1, '2026-04-16 20:54:51'),
+(5, 1, 'f1adff769cfa1a974f684c8626d851b52a64f722b5c11b2a6881b95804b084f1', '2026-04-17 07:17:34', 1, '2026-04-17 04:47:34');
 
 -- --------------------------------------------------------
 
@@ -163,9 +189,9 @@ CREATE TABLE `usuarios` (
 -- Despejando dados para a tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `data_cadastro`, `foto`) VALUES
-(1, 'Admin', 'admin@email.com', '123456', '2026-03-16 17:31:30', NULL),
-(2, 'Mario', 'mario@email.com', '123456', '2026-03-16 18:05:51', 'uploads/Captura de Tela (147).png');
+INSERT INTO `usuarios` (`id`, `nome`, `tag`, `email`, `senha`, `data_cadastro`, `foto`) VALUES
+(1, 'Erick', '#6620', 'erickyudikinoshita@gmail.com', '$2y$10$DMtSIjQn7ELf.CaaEyisSeOeBONJEEwonl8DoIhrQLo7LuHUV.CSW', '2026-04-16 20:27:22', 'uploads/perfil_6a10b8fe65573.png'),
+(2, 'Yudi', '#8269', 'zthelynz@gmail.com', '$2y$10$5EaaQKdLNNsv9H83gu72vuR3IdaxjG/g99UY8402EQz6UjaqF56fm', '2026-05-06 15:59:42', 'uploads/perfil_69fb660e4d5ac.png');
 
 --
 -- Índices para tabelas despejadas
@@ -203,6 +229,13 @@ ALTER TABLE `presencas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `recuperacao_senha`
+--
+ALTER TABLE `recuperacao_senha`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
+
+--
 -- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -217,31 +250,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `grupo_eventos`
 --
 ALTER TABLE `grupo_eventos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `grupo_usuarios`
 --
 ALTER TABLE `grupo_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `mensagens`
 --
 ALTER TABLE `mensagens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `presencas`
 --
 ALTER TABLE `presencas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `recuperacao_senha`
+--
+ALTER TABLE `recuperacao_senha`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
@@ -258,6 +297,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `eventos`
   ADD CONSTRAINT `eventos_ibfk_1` FOREIGN KEY (`grupo_id`) REFERENCES `grupo_eventos` (`id`);
+
+--
+-- Restrições para tabelas `recuperacao_senha`
+--
+ALTER TABLE `recuperacao_senha`
+  ADD CONSTRAINT `recuperacao_senha_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
